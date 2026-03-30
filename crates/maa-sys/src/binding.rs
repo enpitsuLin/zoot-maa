@@ -9,20 +9,26 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 #[cfg(test)]
 mod tests {
     use std::ffi::CStr;
-    use std::path::Path;
+    use std::path::PathBuf;
 
     use crate::binding::MaaCore;
 
     fn get_test_lib() -> MaaCore {
-        let path = Path::new(env!("MAA_LIB_PATH")).join(
-            #[cfg(target_os = "macos")]
-            "libMaaCore.dylib",
-            #[cfg(target_os = "windows")]
-            "MaaCore.dll",
-            #[cfg(target_os = "linux")]
-            "libMaaCore.so"
-        );
-        unsafe { MaaCore::new(path).unwrap() }
+        let path = PathBuf::from(std::env::var("MAA_LIB_PATH").expect("MAA_LIB_PATH env not set"));
+        
+        // 如果路径是文件，直接使用；如果是目录，根据 target_os 拼接库文件名
+        let lib_path = if path.is_file() {
+            path
+        } else {
+            path.join(match std::env::consts::OS {
+                "macos" => "libMaaCore.dylib",
+                "windows" => "MaaCore.dll",
+                "linux" => "libMaaCore.so",
+                _ => panic!("Unsupported OS"),
+            })
+        };
+        
+        unsafe { MaaCore::new(lib_path).expect("Failed to load MaaCore library") }
     }
 
     #[test]
