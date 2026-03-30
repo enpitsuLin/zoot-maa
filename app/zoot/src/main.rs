@@ -6,7 +6,7 @@ use gpui::{
     actions, px, size, AnyView, App, AppContext, Application, Bounds, Menu, MenuItem, WindowBounds,
     WindowKind, WindowOptions,
 };
-use gpui::{point, SharedString, TitlebarOptions};
+use gpui::{SharedString, WindowBackgroundAppearance, WindowDecorations};
 use gpui_component::{Root, Theme};
 use reqwest_client::ReqwestClient;
 
