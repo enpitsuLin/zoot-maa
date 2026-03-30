@@ -24,6 +24,44 @@
 │
 ```
 
+## 开发
+
+### 运行 maa-sys 测试
+
+运行 `maa-sys` crate 的测试需要设置以下环境变量：
+
+| 环境变量 | 说明 | 示例 |
+|---------|------|------|
+| `MAA_LIB_PATH` | MaaCore 库文件所在目录或完整路径 | `maa-include/build/bin/Debug` |
+| `MAA_RESOURCE_PATH` | 资源文件**父目录**（包含 `resource` 子目录的目录） | `maa-include` |
+
+**注意事项：**
+- `MAA_RESOURCE_PATH` 必须指向包含 `resource` 子目录的父目录，而不是直接指向 `resource` 目录本身
+- 运行测试时还需要设置 `LD_LIBRARY_PATH` 以加载依赖库
+
+**VS Code 配置示例：**
+
+在项目根目录的 `.vscode/settings.json` 中添加：
+
+```json
+{
+  "rust-analyzer.runnables.extraEnv": {
+    "MAA_RESOURCE_PATH": "${workspaceFolder}/maa-include",
+    "MAA_LIB_PATH": "${workspaceFolder}/maa-include/build/bin/Debug"
+  }
+}
+```
+
+**命令行运行测试：**
+
+```bash
+export MAA_RESOURCE_PATH="/path/to/maa-include"
+export MAA_LIB_PATH="/path/to/maa-include/build/bin/Debug"
+export LD_LIBRARY_PATH="/path/to/maa-include/src/MaaUtils/MaaDeps/vcpkg/installed/maa-x64-linux/lib:/path/to/maa-include/src/MaaUtils/MaaDeps/x-tools/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/usr/lib:$LD_LIBRARY_PATH"
+
+cargo test --package maa-sys
+```
+
 # License
 
 MIT
