@@ -1,0 +1,6 @@
+[submodule "MaaAssistantArknights"]
+	path = MaaAssistantArknights
+	url = https://github.com/MaaAssistantArknights/MaaAssistantArknights.git
+[submodule "maa-include"]
+	path = maa-include
+	url = https://github.com/MaaAssistantArknights/MaaAssistantArknights.git
